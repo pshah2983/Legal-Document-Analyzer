@@ -12,6 +12,9 @@ frontend/.env.*.local
 .env
 .env.local
 
+# Local Startup Instructions & Documentation (Ignored)
+START_SYSTEM.md
+
 # Generated Local Test Documents (Contains mock datasets)
 test_documents/
 *.docx
