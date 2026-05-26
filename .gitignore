@@ -1,0 +1,48 @@
+# ==============================================================================
+# LEGAL DOCUMENT ANALYZER - GITIGNORE CONFIGURATION
+# ==============================================================================
+
+# Active Credentials & Environment Configuration (CRITICAL)
+backend/.env
+backend/.env.local
+backend/.env.*.local
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+.env
+.env.local
+
+# Generated Local Test Documents (Contains mock datasets)
+test_documents/
+*.docx
+*.pdf
+
+# Python - Runtime & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Python - Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Node/React Frontend - Modules & Build Out
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.svelte-kit/
+frontend/.next/
+frontend/out/
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
