@@ -49,6 +49,16 @@ def ensure_collection():
                 collection_name=COLLECTION,
                 vectors_config=VectorParams(size=384, distance=Distance.COSINE)
             )
+        # Always attempt to create the payload index for doc_id to be safe
+        try:
+            client.create_payload_index(
+                collection_name=COLLECTION,
+                field_name="doc_id",
+                field_schema="keyword"
+            )
+        except Exception:
+            # Safe catch-all for when index already exists or is in process
+            pass
     except Exception as e:
         print(f"[Qdrant] Error checking/creating collection: {e}")
 

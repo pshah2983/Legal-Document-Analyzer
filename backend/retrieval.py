@@ -49,9 +49,9 @@ async def query_rag(doc_id: str, question: str):
     q_emb = EMBED_MODEL.encode([question], normalize_embeddings=True)[0]
     
     # Run similarity query filtering by document ID
-    results = client.search(
+    response = client.query_points(
         collection_name=COLLECTION,
-        query_vector=q_emb.tolist() if hasattr(q_emb, 'tolist') else list(q_emb),
+        query=q_emb.tolist() if hasattr(q_emb, 'tolist') else list(q_emb),
         limit=5,
         query_filter=Filter(
             must=[
@@ -59,6 +59,7 @@ async def query_rag(doc_id: str, question: str):
             ]
         )
     )
+    results = response.points
     
     # Extract source records
     sources = []
