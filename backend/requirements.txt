@@ -6,7 +6,7 @@ langchain-groq
 langchain-community
 langchain-text-splitters
 qdrant-client
-sentence-transformers
+fastembed
 pypdf
 python-docx
 pydantic>=2.9.0

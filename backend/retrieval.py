@@ -105,7 +105,7 @@ def generate_mock_rag_response(question: str, context_chunks: list) -> str:
 
 def _retrieve_chunks(doc_id: str, question: str, limit: int = 5):
     """Encode question and retrieve top-k vector chunks from Qdrant."""
-    q_emb = EMBED_MODEL.encode([question], normalize_embeddings=True)[0]
+    q_emb = list(EMBED_MODEL.embed([question]))[0]
     
     response = client.query_points(
         collection_name=COLLECTION,

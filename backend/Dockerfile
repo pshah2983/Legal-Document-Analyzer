@@ -13,9 +13,9 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Pre-download the HuggingFace sentence-transformer model during image build.
+# Pre-download the HuggingFace fastembed model during image build.
 # This avoids container startup timeouts and heavy network overhead at runtime on host providers.
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('BAAI/bge-small-en-v1.5')"
+RUN python -c "from fastembed import TextEmbedding; TextEmbedding('BAAI/bge-small-en-v1.5')"
 
 # Copy the rest of the application code
 COPY . /app/

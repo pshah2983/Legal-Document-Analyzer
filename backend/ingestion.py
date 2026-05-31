@@ -4,7 +4,7 @@ import os
 from pypdf import PdfReader
 from docx import Document as DocxDocument
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 
@@ -24,20 +24,20 @@ else:
 
 COLLECTION = 'legal_docs'
 
-# Embeddings model loaded locally (BAAI/bge-small-en-v1.5)
+# Embeddings model loaded locally (BAAI/bge-small-en-v1.5 via fastembed ONNX)
 # This model has 384 dimensions and is highly optimized for semantic search.
-print("[Embeddings] Loading BAAI/bge-small-en-v1.5 model...")
+print("[Embeddings] Loading BAAI/bge-small-en-v1.5 fastembed model...")
 try:
-    EMBED_MODEL = SentenceTransformer('BAAI/bge-small-en-v1.5')
+    EMBED_MODEL = TextEmbedding(model_name='BAAI/bge-small-en-v1.5')
 except Exception as e:
-    print(f"[Embeddings] Warning: Failed to load local SentenceTransformer: {e}")
+    print(f"[Embeddings] Warning: Failed to load local fastembed TextEmbedding: {e}")
     print("[Embeddings] Initializing fallback light mock embedder...")
     class MockEmbedder:
-        def encode(self, text_or_list, **kwargs):
+        def embed(self, text_or_list, **kwargs):
             import numpy as np
             if isinstance(text_or_list, str):
-                return np.zeros(384)
-            return np.zeros((len(text_or_list), 384))
+                return [np.zeros(384)]
+            return [np.zeros(384) for _ in text_or_list]
     EMBED_MODEL = MockEmbedder()
 
 def ensure_collection():
@@ -97,8 +97,8 @@ async def ingest_document(contents: bytes, filename: str):
     
     doc_id = str(uuid.uuid4())
     
-    # Calculate embeddings
-    embeddings = EMBED_MODEL.encode(chunks, batch_size=32, normalize_embeddings=True)
+    # Calculate embeddings using optimized fastembed ONNX generator
+    embeddings = list(EMBED_MODEL.embed(chunks))
     
     points = []
     for i, (chunk, emb) in enumerate(zip(chunks, embeddings)):
