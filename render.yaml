@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: legal-agreement-diagnostics-backend
+    env: docker
+    dockerfilePath: Dockerfile
+    dockerContext: backend
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: GROQ_API_KEY
+        sync: false
+        placeholder: "Enter your Groq API Key (gsk_...)"
+      - key: QDRANT_URL
+        sync: false
+        placeholder: "Enter your Qdrant Cluster URL (https://...)"
+      - key: QDRANT_API_KEY
+        sync: false
+        placeholder: "Enter your Qdrant API Key"
