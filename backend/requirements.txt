@@ -4,9 +4,11 @@ python-multipart
 langchain
 langchain-groq
 langchain-community
+langchain-text-splitters
 qdrant-client
 sentence-transformers
 pypdf
 python-docx
 pydantic>=2.9.0
 python-dotenv
+reportlab
